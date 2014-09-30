@@ -29,7 +29,6 @@ Instructions for setting up bitseal-server:
                  apiinterface = 0.0.0.0   
                  apiusername = YOUR_API_USERNAME   
                  apipassword = YOUR_API_PASSWORD   
-                 sendoutgoingconnections = True   
 
 7) Save and close the keys.dat file
 
