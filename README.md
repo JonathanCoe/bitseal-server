@@ -1,15 +1,17 @@
 Bitseal-Server
 =======
 
+[![tip for next commit](https://tip4commit.com/projects/1002.svg)](https://tip4commit.com/github/JonathanCoe/bitseal-server)
+
 Bitseal is a Bitmessage client for Android, currently in Beta. 
 
-The Bitseal server application is a slightly modified version of  <a href="https://github.com/bitmessage/pybitmessage">PyBitmessage</a> 
+The Bitseal server application is a slightly modified version of  [PyBitmessage](https://github.com/bitmessage/pybitmessage)
 
 See Bitseal's main respository: https://github.com/JonathanCoe/bitseal
 
 
-Instructions for setting up bitseal-server:
-===
+Instructions for setting up bitseal-server
+---------------
 
 1) Download the zip file of the source code from Github
 
@@ -22,14 +24,16 @@ Instructions for setting up bitseal-server:
 5) Open the keys.dat file. You can find its location using this reference: https://bitmessage.org/wiki/Keys.dat
 
 6) Add the following lines to the "bitmessagesettings" section of the keys.dat file, replacing the port number, username, and password values as appropriate:  
-  
-                 daemon = true   
-                 apienabled = true   
-                 apiport = YOUR_API_PORT_NUMBER   
-                 apiinterface = 0.0.0.0   
-                 apiusername = YOUR_API_USERNAME   
-                 apipassword = YOUR_API_PASSWORD   
 
+```
+daemon = true
+apienabled = true
+apiport = YOUR_API_PORT_NUMBER
+apiinterface = 0.0.0.0
+apiusername = YOUR_API_USERNAME
+apipassword = YOUR_API_PASSWORD
+```  
+                    
 7) Save and close the keys.dat file
 
 8) Ensure that your server's firewall is set up allowing incoming + outgoing TCP connections on port 8444 (PyBitmessage default) and the API port you specified in the keys.dat file
