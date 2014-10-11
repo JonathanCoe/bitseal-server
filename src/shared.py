@@ -4,9 +4,9 @@ verbose = 1
 ''' Equals two days and 12 hours.'''
 maximumAgeOfAnObjectThatIAmWillingToAccept = 216000
 
-''' Equals 4 weeks. This is 2 days 18 hours in stock PyBitmessage, but we want to hold on to objects for longer
+''' Equals 1 week. This is 2 days 18 hours in stock PyBitmessage, but we want to hold on to objects for longer
 so that lite clients can retrieve them even if they are offline for some time. '''
-lengthOfTimeToLeaveObjectsInInventory = 2419200
+lengthOfTimeToLeaveObjectsInInventory = 604800
 
 ''' Equals 12 weeks. This is 4 weeks in stock PyBitmessage, but we want to hold on to pubkeys for longer so that
 lite clients can retrieve them quickly.'''
@@ -36,7 +36,7 @@ import time
 from os import path, environ
 from struct import Struct
 
-# Project imports.
+# Project imports
 from addresses import *
 import highlevelcrypto
 import shared
@@ -551,7 +551,7 @@ def checkAndShareMsgWithPeers(data):
     # Let us check to make sure that the proof of work is sufficient.
     if not isProofOfWorkSufficient(data):
         logger.debug('Proof of work in msg message insufficient.')
-        return
+        return False
 
     readPosition = 8
     embeddedTime, = unpack('>I', data[readPosition:readPosition + 4])
@@ -566,15 +566,15 @@ def checkAndShareMsgWithPeers(data):
 
     if embeddedTime > (int(time.time()) + 10800): 
         logger.debug('The embedded time in this msg message is more than three hours in the future. That doesn\'t make sense. Ignoring message.')
-        return
+        return False
     if embeddedTime < (int(time.time()) - maximumAgeOfAnObjectThatIAmWillingToAccept):
         logger.debug('The embedded time in this msg message is too old. Ignoring message.')
-        return
+        return False
     streamNumberAsClaimedByMsg, streamNumberAsClaimedByMsgLength = decodeVarint(
         data[readPosition:readPosition + 9])
     if not streamNumberAsClaimedByMsg in streamsInWhichIAmParticipating:
         logger.debug('The streamNumber %s isn\'t one we are interested in.' % streamNumberAsClaimedByMsg)
-        return
+        return False
     readPosition += streamNumberAsClaimedByMsgLength
     inventoryHash = calculateInventoryHash(data)
     shared.numberOfInventoryLookupsPerformed += 1
@@ -582,11 +582,11 @@ def checkAndShareMsgWithPeers(data):
     if inventoryHash in inventory:
         logger.debug('We have already received this msg message. Ignoring.')
         inventoryLock.release()
-        return
+        return False
     elif isInSqlInventory(inventoryHash):
         logger.debug('We have already received this msg message (it is stored on disk in the SQL inventory). Ignoring it.')
         inventoryLock.release()
-        return
+        return False
     # This msg message is valid. Let's let our peers know about it.
     objectType = 'msg'
     # When we store this msg, we will use the time it was received rather than the embedded time. This allows lite clients
@@ -606,14 +606,15 @@ def checkAndShareMsgWithPeers(data):
     with shared.objectProcessorQueueSizeLock:
         shared.objectProcessorQueueSize += len(data)
         objectProcessorQueue.put((objectType,data))
+    return True
 
 def checkAndSharegetpubkeyWithPeers(data):
     if not isProofOfWorkSufficient(data):
         logger.debug('Proof of work in getpubkey message insufficient.')
-        return
+        return False
     if len(data) < 34:
         logger.debug('getpubkey message doesn\'t contain enough data. Ignoring.')
-        return
+        return False
     readPosition = 8  # bypass the nonce
     embeddedTime, = unpack('>I', data[readPosition:readPosition + 4])
 
@@ -627,10 +628,10 @@ def checkAndSharegetpubkeyWithPeers(data):
 
     if embeddedTime > int(time.time()) + 10800:
         logger.debug('The time in this getpubkey message is too new. Ignoring it. Time: %s' % embeddedTime)
-        return
+        return False
     if embeddedTime < int(time.time()) - maximumAgeOfAnObjectThatIAmWillingToAccept:
         logger.debug('The time in this getpubkey message is too old. Ignoring it. Time: %s' % embeddedTime)
-        return
+        return False
     requestedAddressVersionNumber, addressVersionLength = decodeVarint(
         data[readPosition:readPosition + 10])
     readPosition += addressVersionLength
@@ -638,7 +639,7 @@ def checkAndSharegetpubkeyWithPeers(data):
         data[readPosition:readPosition + 10])
     if not streamNumber in streamsInWhichIAmParticipating:
         logger.debug('The streamNumber %s isn\'t one we are interested in.' % streamNumber)
-        return
+        return False
     readPosition += streamNumberLength
 
     shared.numberOfInventoryLookupsPerformed += 1
@@ -647,11 +648,11 @@ def checkAndSharegetpubkeyWithPeers(data):
     if inventoryHash in inventory:
         logger.debug('We have already received this getpubkey request. Ignoring it.')
         inventoryLock.release()
-        return
+        return False
     elif isInSqlInventory(inventoryHash):
         logger.debug('We have already received this getpubkey request (it is stored on disk in the SQL inventory). Ignoring it.')
         inventoryLock.release()
-        return
+        return False
 
     objectType = 'getpubkey'
     # When we store this msg, we will use the time it was received rather than the embedded time. This allows lite clients
@@ -672,16 +673,17 @@ def checkAndSharegetpubkeyWithPeers(data):
     with shared.objectProcessorQueueSizeLock:
         shared.objectProcessorQueueSize += len(data)
         objectProcessorQueue.put((objectType,data))
+    return True
 
 def checkAndSharePubkeyWithPeers(data):
     logger.debug('JC INFO: running checkAndSharePubkey for the following payload: %s' % data.encode('hex'))
     if len(data) < 146 or len(data) > 420:  # sanity check
         logger.debug('JC INFO: Sanity check failed')
-        return
+        return False
     # Let us make sure that the proof of work is sufficient.
     if not isProofOfWorkSufficient(data):
         logger.debug('Proof of work in pubkey message insufficient.')
-        return
+        return False
 
     readPosition = 8  # for the nonce
     embeddedTime, = unpack('>I', data[readPosition:readPosition + 4])
@@ -696,10 +698,10 @@ def checkAndSharePubkeyWithPeers(data):
 
     if embeddedTime < int(time.time()) - lengthOfTimeToHoldOnToAllPubkeys:
         logger.debug('The embedded time in this pubkey message is too old. Ignoring. Embedded time is: %s' % embeddedTime)
-        return
+        return False
     if embeddedTime > int(time.time()) + 10800:
         logger.debug('The embedded time in this pubkey message more than several hours in the future. This is irrational. Ignoring message.') 
-        return
+        return False
     addressVersion, varintLength = decodeVarint(
         data[readPosition:readPosition + 10])
     readPosition += varintLength
@@ -708,7 +710,7 @@ def checkAndSharePubkeyWithPeers(data):
     readPosition += varintLength
     if not streamNumber in streamsInWhichIAmParticipating:
         logger.debug('The streamNumber %s isn\'t one we are interested in.' % streamNumber)
-        return
+        return False
     if addressVersion >= 4:
         tag = data[readPosition:readPosition + 32]
         logger.debug('tag in received pubkey is: %s' % tag.encode('hex'))
@@ -721,11 +723,11 @@ def checkAndSharePubkeyWithPeers(data):
     if inventoryHash in inventory:
         logger.debug('We have already received this pubkey. Ignoring it.')
         inventoryLock.release()
-        return
+        return False
     elif isInSqlInventory(inventoryHash):
         logger.debug('We have already received this pubkey (it is stored on disk in the SQL inventory). Ignoring it.')
         inventoryLock.release()
-        return
+        return False
     objectType = 'pubkey'
     inventory[inventoryHash] = (
         objectType, streamNumber, data, embeddedTime, tag)
@@ -743,13 +745,13 @@ def checkAndSharePubkeyWithPeers(data):
     with shared.objectProcessorQueueSizeLock:
         shared.objectProcessorQueueSize += len(data)
         objectProcessorQueue.put((objectType,data))
-
+    return True
 
 def checkAndShareBroadcastWithPeers(data):
     # Let us verify that the proof of work is sufficient.
     if not isProofOfWorkSufficient(data):
         logger.debug('Proof of work in broadcast message insufficient.')
-        return
+        return False
     readPosition = 8  # bypass the nonce
     embeddedTime, = unpack('>I', data[readPosition:readPosition + 4])
 
@@ -763,13 +765,13 @@ def checkAndShareBroadcastWithPeers(data):
 
     if embeddedTime > (int(time.time()) + 10800):  # prevent funny business
         logger.debug('The embedded time in this broadcast message is more than three hours in the future. That doesn\'t make sense. Ignoring message.') 
-        return
+        return False
     if embeddedTime < (int(time.time()) - maximumAgeOfAnObjectThatIAmWillingToAccept):
         logger.debug('The embedded time in this broadcast message is too old. Ignoring message.')
-        return
+        return False
     if len(data) < 180:
         logger.debug('The payload length of this broadcast packet is unreasonably low. Someone is probably trying funny business. Ignoring message.')
-        return
+        return False
     broadcastVersion, broadcastVersionLength = decodeVarint(
         data[readPosition:readPosition + 10])
     readPosition += broadcastVersionLength
@@ -778,7 +780,7 @@ def checkAndShareBroadcastWithPeers(data):
         readPosition += streamNumberLength
         if not streamNumber in streamsInWhichIAmParticipating:
             logger.debug('The streamNumber %s isn\'t one we are interested in.' % streamNumber)
-            return
+            return False
     if broadcastVersion >= 3:
         tag = data[readPosition:readPosition+32]
     else:
@@ -789,11 +791,11 @@ def checkAndShareBroadcastWithPeers(data):
     if inventoryHash in inventory:
         logger.debug('We have already received this broadcast object. Ignoring.')
         inventoryLock.release()
-        return
+        return False
     elif isInSqlInventory(inventoryHash):
         logger.debug('We have already received this broadcast object (it is stored on disk in the SQL inventory). Ignoring it.')
         inventoryLock.release()
-        return
+        return False
     # It is valid. Let's let our peers know about it.
     objectType = 'broadcast'
     inventory[inventoryHash] = (
@@ -811,7 +813,7 @@ def checkAndShareBroadcastWithPeers(data):
     with shared.objectProcessorQueueSizeLock:
         shared.objectProcessorQueueSize += len(data)
         objectProcessorQueue.put((objectType,data))
-
+    return True
 
 helper_startup.loadConfig()
 from debug import logger

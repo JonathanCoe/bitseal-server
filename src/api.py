@@ -149,10 +149,8 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
             raise APIError(0, 'I need %s parameters!' %number) 
 
     def _handle_request(self, method, params):
-        if method == 'helloWorld':
-            (a, b) = params
-            return a + '-' + b
-        elif method == 'add':
+        
+        if method == 'add':
             (a, b) = params
             return a + b
 
@@ -162,25 +160,31 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
             self.checkParameters(params, 1)
             payload, = params 
             payloadBytes = payload.decode('hex') 
-            shared.checkAndShareMsgWithPeers(payloadBytes)
-            return 'Message disseminated successfully' 
+            if shared.checkAndShareMsgWithPeers(payloadBytes):
+                return 'Message disseminated successfully'
+            else:
+                return 'Message dissemination failed'
 
         elif method == 'disseminatePubkey': 
             self.checkParameters(params, 1)
             payload, = params 
             payloadBytes = payload.decode('hex') 
-            shared.checkAndSharePubkeyWithPeers(payloadBytes)
-            return 'Pubkey disseminated successfully' 
+            if shared.checkAndSharePubkeyWithPeers(payloadBytes):
+                return 'Pubkey disseminated successfully'
+            else:
+                return 'Pubkey dissemination failed'
 
         elif method == 'disseminateGetpubkey': 
             self.checkParameters(params, 1)
             payload, = params 
             payloadBytes = payload.decode('hex') 
-            shared.checkAndSharegetpubkeyWithPeers(payloadBytes)
-            return 'Getpubkey disseminated successfully' 
+            if shared.checkAndSharegetpubkeyWithPeers(payloadBytes):
+                return 'Getpubkey disseminated successfully'
+            else:
+                return 'Getpubkey dissemination failed'
 
 
-        #   Commands for requesting msgs, getpubkeys, and pubkeys
+        #   Commands for requesting msgs and pubkeys
 
         elif method == 'requestPubkey': 
             if len(params) != 2: 
