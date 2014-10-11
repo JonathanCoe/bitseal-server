@@ -676,9 +676,7 @@ def checkAndSharegetpubkeyWithPeers(data):
     return True
 
 def checkAndSharePubkeyWithPeers(data):
-    logger.debug('JC INFO: running checkAndSharePubkey for the following payload: %s' % data.encode('hex'))
     if len(data) < 146 or len(data) > 420:  # sanity check
-        logger.debug('JC INFO: Sanity check failed')
         return False
     # Let us make sure that the proof of work is sufficient.
     if not isProofOfWorkSufficient(data):
