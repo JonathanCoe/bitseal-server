@@ -55,5 +55,7 @@ Licensed under the [Gnu General Public License Version 3](https://www.gnu.org/li
 
 Support the project!
 ---------------
-The development of Bitseal has been a large project, taking many months of work. I'm doing it on a purely non-profit basis. Bitcoin donations are very gratefully received: 
+The development of Bitseal has been a large project, taking many months of work. I'm doing it on a purely non-profit basis. 
+
+Bitcoin donations are very gratefully received: 
 [**1L7amdWrPv4R4f1vLdanr2xU71TPs3wUEC**](https://www.blocktrail.com/address/1L7amdWrPv4R4f1vLdanr2xU71TPs3wUEC)
