@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ps aux | grep -i bitmessagemain.py | awk {'print $2'} | xargs kill -15
+ps aux | grep -i bitmessagemain.py | awk {'print $2'} | xargs kill -2
 sleep 30 #Give PyBitmessage a reasonable amount of time to shut down gracefully
 
 cd ~/apps/bitseal-server/src
