@@ -19,7 +19,7 @@ class APIError(Exception):
         self.error_number = error_number
         self.error_message = error_message
     def __str__(self):
-        return "API Error %04i: %s" % (self.error_number, self.error_message)
+        return "API Error %03i: %s" % (self.error_number, self.error_message)
 
 class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
 
@@ -105,7 +105,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
         try:
             return text.decode(decode_type)
         except Exception as e:
-            raise APIError(22, "Decode error - " + str(e) + ". Had trouble while decoding string: " + repr(text))
+            raise APIError(1, "Decode error - " + str(e) + ". Had trouble while decoding string: " + repr(text))
 
     def _dispatch(self, method, params):
         self.cookies = []
@@ -191,12 +191,12 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
                 raise APIError(0, 'I need 2 parameters!') 
             identifierHex, addressVersion = params # The identifier is either the ripe hash or the 'tag' of the pubkey we are requesting
             if addressVersion < 1:
-                raise APIError(0, 'The address version cannot be less than 1')
+                raise APIError(2, 'The address version cannot be less than 1')
             elif addressVersion > 4:
-                raise APIError(0, 'Address versions above 4 are currently not supported')
+                raise APIError(3, 'Address versions above 4 are currently not supported')
             elif addressVersion < 4: # For pubkeys of address versions 1-3
                 if len(identifierHex) != 40: 
-                    raise APIError(19, 'The length of hash should be 20 bytes (encoded in hex and thus 40 characters).')
+                    raise APIError(4, 'The length of hash should be 20 bytes (encoded in hex and thus 40 characters).')
                 else:
                     requestedHash = self._decode(identifierHex, "hex")
                     queryReturn = sqlQuery('''SELECT transmitdata FROM pubkeys WHERE hash = ? ; ''', requestedHash) 
@@ -210,7 +210,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
                             return 'The requested pubkey was found, but its payload is above the maximum size limit. The size of the pubkey payload is ' + str(len(payload))                     
             else:  # For pubkeys of address version 4  
                 if len(identifierHex) != 64: 
-                    raise APIError(19, 'The length of tag should be 32 bytes (encoded in hex and thus 64 characters).') 
+                    raise APIError(5, 'The length of tag should be 32 bytes (encoded in hex and thus 64 characters).') 
                 else:
                     requestedTag = self._decode(identifierHex, "hex")
                     queryReturn = sqlQuery('''SELECT payload FROM inventory WHERE objecttype='pubkey' and tag=? ''', requestedTag) 
