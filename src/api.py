@@ -207,7 +207,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
                         if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
                             return self.outputQueryReturn("pubkeyPayload", queryReturn)
                         else:
-                            return 'The requested pubkey was found, but its payload is above the maximum size limit. The size of the pubkey payload is ' + str(len(payload))                     
+                            raise APIError(6, 'The requested object was found, but its payload is above the maximum size limit. The size of the object payload is ' + str(len(payload)))                   
             else:  # For pubkeys of address version 4  
                 if len(identifierHex) != 64: 
                     raise APIError(5, 'The length of tag should be 32 bytes (encoded in hex and thus 64 characters).') 
@@ -219,7 +219,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
                         if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
                             return self.outputQueryReturn("pubkeyPayload", queryReturn)
                         else:
-                            return 'The requested pubkey was found, but its payload is above the maximum size limit. The size of the pubkey payload is ' + str(len(payload))                     
+                            raise APIError(6, 'The requested object was found, but its payload is above the maximum size limit. The size of the object payload is ' + str(len(payload)))                   
                     else:
                         # We had no success looking in the sql inventory. Let's look through the memory inventory.
                         with shared.inventoryLock:
@@ -229,7 +229,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
                                     if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
                                         return self.outputPayload("pubkeyPayload", payload)
                                     else:
-                                        return 'The requested pubkey was found, but its payload is above the maximum size limit. The size of the pubkey payload is ' + str(len(payload))
+                                        raise APIError(6, 'The requested object was found, but its payload is above the maximum size limit. The size of the object payload is ' + str(len(payload)))
                                 else:
                                     return 'No pubkeys found'
                                 
