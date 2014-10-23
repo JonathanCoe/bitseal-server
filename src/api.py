@@ -160,7 +160,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
             self.checkParameters(params, 1)
             payload, = params 
             payloadBytes = payload.decode('hex') 
-            if shared.checkAndShareMsgWithPeers(payloadBytes):
+            if (shared.checkAndShareMsgWithPeers(payloadBytes) > 0):
                 return 'Message disseminated successfully'
             else:
                 return 'Message dissemination failed'
@@ -169,7 +169,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
             self.checkParameters(params, 1)
             payload, = params 
             payloadBytes = payload.decode('hex') 
-            if shared.checkAndSharePubkeyWithPeers(payloadBytes):
+            if (shared.checkAndSharePubkeyWithPeers(payloadBytes) > 0):
                 return 'Pubkey disseminated successfully'
             else:
                 return 'Pubkey dissemination failed'
@@ -178,7 +178,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
             self.checkParameters(params, 1)
             payload, = params 
             payloadBytes = payload.decode('hex') 
-            if shared.checkAndSharegetpubkeyWithPeers(payloadBytes):
+            if (shared.checkAndSharegetpubkeyWithPeers(payloadBytes) > 0):
                 return 'Getpubkey disseminated successfully'
             else:
                 return 'Getpubkey dissemination failed'

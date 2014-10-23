@@ -154,9 +154,9 @@ selfInitiatedConnections = {}
 
 if shared.useVeryEasyProofOfWorkForTesting:
     shared.networkDefaultProofOfWorkNonceTrialsPerByte = int(
-        shared.networkDefaultProofOfWorkNonceTrialsPerByte / 16)
+        shared.networkDefaultProofOfWorkNonceTrialsPerByte / 100)
     shared.networkDefaultPayloadLengthExtraBytes = int(
-        shared.networkDefaultPayloadLengthExtraBytes / 7000)
+        shared.networkDefaultPayloadLengthExtraBytes / 100)
 
 class Main:
     def start(self, daemon=False):
@@ -173,7 +173,7 @@ class Main:
 
         signal.signal(signal.SIGINT, helper_generic.signal_handler)
         # signal.signal(signal.SIGINT, signal.SIG_DFL)
-        
+
         # Log the startup time
         print('PyBitmessage started at %s' % int(time.time()))
 
