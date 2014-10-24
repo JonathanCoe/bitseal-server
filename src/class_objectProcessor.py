@@ -387,7 +387,7 @@ class objectProcessor(threading.Thread):
         if len(msgData) == 32:
             logger.info('This msg appears to be an acknowledgment. Saving it to the database in case a lite client requests it.')
             embeddedTime = data[8:16]
-            receivedTime = int(time.time()) + self.ACK_SAVE_ADJUSTMENT_TIME,
+            receivedTime = int(time.time()) + self.ACK_SAVE_ADJUSTMENT_TIME
             sqlExecute('''INSERT INTO inventory VALUES (?,?,?,?,?,?,?)''',
                    inventoryHash,
                    2,
