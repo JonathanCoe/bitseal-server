@@ -231,7 +231,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
                         with shared.inventoryLock:
                             for hash, storedValue in shared.inventory.items():
                                 objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
-                                if objectType == OBJECT_TYPE_PUBKEY and tag == requestedTag:
+                                if objectType == self.OBJECT_TYPE_PUBKEY and tag == requestedTag:
                                     if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
                                         return self.outputPayload("pubkeyPayload", payload)
                                     else:
@@ -250,7 +250,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
             with shared.inventoryLock:
                 for hash, storedValue in shared.inventory.items():
                     objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
-                    if objectType == OBJECT_TYPE_MSG and receivedTime > receivedSinceTime and receivedTime < receivedBeforeTime:
+                    if objectType == self.OBJECT_TYPE_MSG and receivedTime > receivedSinceTime and receivedTime < receivedBeforeTime:
                         if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
                             output = self.addPayloadToOutput(output, payload)
             if output == []:
