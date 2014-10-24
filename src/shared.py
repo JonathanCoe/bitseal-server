@@ -53,7 +53,7 @@ inventory = {} #of objects (like msg payloads and pubkey payloads) Does not incl
 inventoryLock = threading.Lock() #Guarantees that two receiveDataThreads don't receive and process the same message concurrently (probably sent by a malicious individual)
 printLock = threading.Lock()
 objectProcessorQueueSizeLock = threading.Lock()
-objectProcessorQueueSize = 0 # in Bytes. We maintain this to prevent nodes from flooing us with objects which take up too much memory. If this gets too big we'll sleep before asking for further objects.
+objectProcessorQueueSize = 0 # in Bytes. We maintain this to prevent nodes from flooding us with objects which take up too much memory. If this gets too big we'll sleep before asking for further objects.
 appdata = '' #holds the location of the application data storage directory
 statusIconColor = 'red'
 connectedHostsList = {} #List of hosts to which we are connected. Used to guarantee that the outgoingSynSender threads won't connect to the same remote node twice.
@@ -404,9 +404,9 @@ def flushInventory():
     #Note that the singleCleanerThread clears out the inventory dictionary from time to time, although it only clears things that have been in the dictionary for a long time. This clears the inventory dictionary Now.
     with SqlBulkExecute() as sql:
         for hash, storedValue in inventory.items():
-            objectType, streamNumber, payload, expiresTime, tag = storedValue
-            sql.execute('''INSERT INTO inventory VALUES (?,?,?,?,?,?)''',
-                       hash,objectType,streamNumber,payload,expiresTime,tag)
+            objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
+            sql.execute('''INSERT INTO inventory VALUES (?,?,?,?,?,?,?)''',
+                       hash,objectType,streamNumber,payload,expiresTime,tag, receivedTime)
             del inventory[hash]
 
 def fixPotentiallyInvalidUTF8Data(text):
@@ -676,8 +676,8 @@ def _checkAndShareUndefinedObjectWithPeers(data):
         inventoryLock.release()
         return
     objectType, = unpack('>I', data[16:20])
-    inventory[inventoryHash] = (
-        objectType, streamNumber, data, embeddedTime,'')
+    receivedTime = int(time.time())
+    inventory[inventoryHash] = (objectType, streamNumber, data, embeddedTime,'', receivedTime)
     inventorySets[streamNumber].add(inventoryHash)
     inventoryLock.release()
     logger.debug('advertising inv with hash: %s' % inventoryHash.encode('hex'))
@@ -707,11 +707,8 @@ def _checkAndShareMsgWithPeers(data):
 
     # This msg message is valid. Let's let our peers know about it.
     objectType = 2
-    # When we store this msg, we will use the time it was received rather than the embedded time. This allows lite clients
-    # to retrieve msgs sent to them. 
     receivedTime = int(time.time())
-    inventory[inventoryHash] = (
-        objectType, streamNumber, data, receivedTime,'')
+    inventory[inventoryHash] = (objectType, streamNumber, data, embeddedTime,'', receivedTime)
     inventorySets[streamNumber].add(inventoryHash)
     inventoryLock.release()
     logger.debug('advertising inv with hash: %s' % inventoryHash.encode('hex'))
@@ -756,11 +753,8 @@ def _checkAndShareGetpubkeyWithPeers(data):
         return
 
     objectType = 0
-    # When we store this getpubkey, we will use the time it was received rather than the embedded time. This allows lite clients
-    # to retrieve msgs sent to them. 
     receivedTime = int(time.time())
-    inventory[inventoryHash] = (
-        objectType, streamNumber, data, receivedTime,'')
+    inventory[inventoryHash] = (objectType, streamNumber, data, embeddedTime,'', receivedTime)
     inventorySets[streamNumber].add(inventoryHash)
     inventoryLock.release()
     # This getpubkey request is valid. Forward to peers.
@@ -807,8 +801,8 @@ def _checkAndSharePubkeyWithPeers(data):
         inventoryLock.release()
         return
     objectType = 1
-    inventory[inventoryHash] = (
-        objectType, streamNumber, data, embeddedTime, tag)
+    receivedTime = int(time.time())
+    inventory[inventoryHash] = (objectType, streamNumber, data, embeddedTime, tag, receivedTime)
     inventorySets[streamNumber].add(inventoryHash)
     inventoryLock.release()
     # This object is valid. Forward it to peers.
@@ -857,8 +851,8 @@ def _checkAndShareBroadcastWithPeers(data):
         return
     # It is valid. Let's let our peers know about it.
     objectType = 3
-    inventory[inventoryHash] = (
-        objectType, streamNumber, data, embeddedTime, tag)
+    receivedTime = int(time.time())
+    inventory[inventoryHash] = (objectType, streamNumber, data, embeddedTime, tag, receivedTime)
     inventorySets[streamNumber].add(inventoryHash)
     inventoryLock.release()
     # This object is valid. Forward it to peers.

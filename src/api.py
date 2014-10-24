@@ -224,7 +224,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
                         # We had no success looking in the sql inventory. Let's look through the memory inventory.
                         with shared.inventoryLock:
                             for hash, storedValue in shared.inventory.items():
-                                objectType, streamNumber, payload, expiresTime, tag = storedValue
+                                objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
                                 if objectType == 'pubkey' and tag == requestedTag:
                                     if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
                                         return self.outputPayload("pubkeyPayload", payload)
@@ -236,15 +236,15 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
         elif method == 'checkForNewMsgs':
             self.checkParameters(params, 3)
             streamNumber, receivedSinceTime, receivedBeforeTime = params
-            queryReturn = sqlQuery('''SELECT payload FROM inventory WHERE objecttype='msg' and streamnumber=? and expiresTime>? and expiresTime<? ''', streamNumber, receivedSinceTime, receivedBeforeTime)
+            queryReturn = sqlQuery('''SELECT payload FROM inventory WHERE objecttype='msg' and streamnumber=? and receivedTime>? and receivedTime<? ''', streamNumber, receivedSinceTime, receivedBeforeTime)
             output = []
             if queryReturn != []:
                 output = self.addQueryReturnToOutput(output, queryReturn)
             # Now let us search through the objects stored in memory
             with shared.inventoryLock:
                 for hash, storedValue in shared.inventory.items():
-                    objectType, streamNumber, payload, expiresTime, tag = storedValue
-                    if objectType == 'msg' and expiresTime > receivedSinceTime and expiresTime < receivedBeforeTime:
+                    objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
+                    if objectType == 'msg' and receivedTime > receivedSinceTime and receivedTime < receivedBeforeTime:
                         if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
                             output = self.addPayloadToOutput(output, payload)
             if output == []:
