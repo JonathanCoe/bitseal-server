@@ -381,16 +381,21 @@ class objectProcessor(threading.Thread):
             return
         else:
             logger.info('This was NOT an acknowledgement bound for me.')
-            if len(msgData) == 32:
-                logger.info('This msg appears to be an acknowledgment. Saving it to the database in case a lite client requests it.')
-                sqlExecute('''INSERT INTO inventory VALUES (?,?,?,?,?,?)''',
-                       inventoryHash,
-                       2,
-                       streamNumberAsClaimedByMsg,
-                       data,
-                       int(time.time()) + self.ACK_SAVE_ADJUSTMENT_TIME,
-                       '')
-
+            
+        # If this msg is an acknowledgment,  let us save it to the database so that lite clients can request it
+        msgData = data[readPosition:]
+        if len(msgData) == 32:
+            logger.info('This msg appears to be an acknowledgment. Saving it to the database in case a lite client requests it.')
+            embeddedTime = data[8:16]
+            receivedTime = int(time.time()) + self.ACK_SAVE_ADJUSTMENT_TIME,
+            sqlExecute('''INSERT INTO inventory VALUES (?,?,?,?,?,?)''',
+                   inventoryHash,
+                   2,
+                   streamNumberAsClaimedByMsg,
+                   data,
+                   embeddedTime,
+                   '',
+                   receivedTime)
 
         # This is not an acknowledgement bound for me. See if it is a message
         # bound for me by trying to decrypt it with my private keys.
