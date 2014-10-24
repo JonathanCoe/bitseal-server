@@ -213,7 +213,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
                     raise APIError(5, 'The length of tag should be 32 bytes (encoded in hex and thus 64 characters).') 
                 else:
                     requestedTag = self._decode(identifierHex, "hex")
-                    queryReturn = sqlQuery('''SELECT payload FROM inventory WHERE objecttype='1' and tag=? ''', requestedTag) 
+                    queryReturn = sqlQuery('''SELECT payload FROM inventory WHERE objecttype=1 and tag=? ''', requestedTag) 
                     if queryReturn != []:
                         payload = queryReturn[0]
                         if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
@@ -225,7 +225,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
                         with shared.inventoryLock:
                             for hash, storedValue in shared.inventory.items():
                                 objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
-                                if objectType == '1' and tag == requestedTag:
+                                if objectType == 1 and tag == requestedTag:
                                     if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
                                         return self.outputPayload("pubkeyPayload", payload)
                                     else:
@@ -236,7 +236,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
         elif method == 'checkForNewMsgs':
             self.checkParameters(params, 3)
             streamNumber, receivedSinceTime, receivedBeforeTime = params
-            queryReturn = sqlQuery('''SELECT payload FROM inventory WHERE objecttype='2' and streamnumber=? and receivedTime>? and receivedTime<? ''', streamNumber, receivedSinceTime, receivedBeforeTime)
+            queryReturn = sqlQuery('''SELECT payload FROM inventory WHERE objecttype=2 and streamnumber=? and receivedTime>? and receivedTime<? ''', streamNumber, receivedSinceTime, receivedBeforeTime)
             output = []
             if queryReturn != []:
                 output = self.addQueryReturnToOutput(output, queryReturn)
@@ -244,7 +244,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
             with shared.inventoryLock:
                 for hash, storedValue in shared.inventory.items():
                     objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
-                    if objectType == '2' and receivedTime > receivedSinceTime and receivedTime < receivedBeforeTime:
+                    if objectType == 2 and receivedTime > receivedSinceTime and receivedTime < receivedBeforeTime:
                         if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
                             output = self.addPayloadToOutput(output, payload)
             if output == []:
