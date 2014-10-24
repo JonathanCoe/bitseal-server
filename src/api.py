@@ -26,6 +26,12 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
     '''' The maximum size of a payload that we will return to a client, in bytes. '''
     MAX_PAYLOAD_SIZE_TO_RETURN = 256000
     
+    ''' The object type number for a pubkey '''
+    OBJECT_TYPE_PUBKEY = 1
+    
+    ''' The object type number for a msg '''
+    OBJECT_TYPE_MSG = 2
+    
     def do_POST(self):
         # Handles the HTTP POST request.
         # Attempts to interpret all HTTP POST requests as XML-RPC calls,
@@ -225,7 +231,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
                         with shared.inventoryLock:
                             for hash, storedValue in shared.inventory.items():
                                 objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
-                                if objectType == 1 and tag == requestedTag:
+                                if objectType == OBJECT_TYPE_PUBKEY and tag == requestedTag:
                                     if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
                                         return self.outputPayload("pubkeyPayload", payload)
                                     else:
@@ -244,7 +250,7 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
             with shared.inventoryLock:
                 for hash, storedValue in shared.inventory.items():
                     objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
-                    if objectType == 2 and receivedTime > receivedSinceTime and receivedTime < receivedBeforeTime:
+                    if objectType == OBJECT_TYPE_MSG and receivedTime > receivedSinceTime and receivedTime < receivedBeforeTime:
                         if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
                             output = self.addPayloadToOutput(output, payload)
             if output == []:
