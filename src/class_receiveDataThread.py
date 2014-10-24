@@ -301,7 +301,7 @@ class receiveDataThread(threading.Thread):
         with shared.inventoryLock:
             for hash, storedValue in shared.inventory.items():
                 if hash not in self.someObjectsOfWhichThisRemoteNodeIsAlreadyAware:
-                    objectType, streamNumber, payload, expiresTime, tag = storedValue
+                    objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
                     if streamNumber == self.streamNumber and expiresTime > int(time.time()):
                         bigInvList[hash] = 0
         numberOfObjectsInInvMessage = 0
@@ -465,7 +465,7 @@ class receiveDataThread(threading.Thread):
             shared.numberOfInventoryLookupsPerformed += 1
             shared.inventoryLock.acquire()
             if hash in shared.inventory:
-                objectType, streamNumber, payload, expiresTime, tag = shared.inventory[hash]
+                objectType, streamNumber, payload, expiresTime, tag, receivedTime = shared.inventory[hash]
                 shared.inventoryLock.release()
                 self.sendObject(payload)
             else:
