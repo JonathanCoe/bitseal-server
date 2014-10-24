@@ -406,7 +406,7 @@ def flushInventory():
         for hash, storedValue in inventory.items():
             objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
             sql.execute('''INSERT INTO inventory VALUES (?,?,?,?,?,?,?)''',
-                       hash,objectType,streamNumber,payload,expiresTime,tag, receivedTime)
+                       hash, objectType, streamNumber, payload, expiresTime, tag, receivedTime)
             del inventory[hash]
 
 def fixPotentiallyInvalidUTF8Data(text):
@@ -677,7 +677,7 @@ def _checkAndShareUndefinedObjectWithPeers(data):
         return
     objectType, = unpack('>I', data[16:20])
     receivedTime = int(time.time())
-    inventory[inventoryHash] = (objectType, streamNumber, data, embeddedTime,'', receivedTime)
+    inventory[inventoryHash] = (objectType, streamNumber, data, embeddedTime, '', receivedTime)
     inventorySets[streamNumber].add(inventoryHash)
     inventoryLock.release()
     logger.debug('advertising inv with hash: %s' % inventoryHash.encode('hex'))
@@ -708,7 +708,7 @@ def _checkAndShareMsgWithPeers(data):
     # This msg message is valid. Let's let our peers know about it.
     objectType = 2
     receivedTime = int(time.time())
-    inventory[inventoryHash] = (objectType, streamNumber, data, embeddedTime,'', receivedTime)
+    inventory[inventoryHash] = (objectType, streamNumber, data, embeddedTime, '', receivedTime)
     inventorySets[streamNumber].add(inventoryHash)
     inventoryLock.release()
     logger.debug('advertising inv with hash: %s' % inventoryHash.encode('hex'))
@@ -754,7 +754,7 @@ def _checkAndShareGetpubkeyWithPeers(data):
 
     objectType = 0
     receivedTime = int(time.time())
-    inventory[inventoryHash] = (objectType, streamNumber, data, embeddedTime,'', receivedTime)
+    inventory[inventoryHash] = (objectType, streamNumber, data, embeddedTime, '', receivedTime)
     inventorySets[streamNumber].add(inventoryHash)
     inventoryLock.release()
     # This getpubkey request is valid. Forward to peers.
