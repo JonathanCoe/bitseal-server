@@ -613,6 +613,9 @@ def checkAndShareObjectWithPeers(data):
     Returns the length of time that we should reserve to process this message
     if we are receiving it off of the wire.
     """
+    
+    print 'JC INFO: object payload : ', data.encode('hex')
+    
     if len(data) > 2 ** 18:
         logger.info('The payload length of this object is too large (%s bytes). Ignoring it.' % len(data))
         return
