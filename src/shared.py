@@ -345,7 +345,16 @@ def isProofOfWorkSufficient(data,
         TTL = 300
     POW, = unpack('>Q', hashlib.sha512(hashlib.sha512(data[
                   :8] + hashlib.sha512(data[8:]).digest()).digest()).digest()[0:8])
-    return POW <= 2 ** 64 / (nonceTrialsPerByte*(len(data) + payloadLengthExtraBytes + ((TTL*(len(data)+payloadLengthExtraBytes))/(2 ** 16))))
+    powTarget = 2 ** 64 / (nonceTrialsPerByte*(len(data) + payloadLengthExtraBytes + ((TTL*(len(data)+payloadLengthExtraBytes))/(2 ** 16))))
+    
+    print 'JC INFO: nonceTrialsPerByte :       ', nonceTrialsPerByte
+    print 'JC INFO: payloadLengthExtraBytes :  ', payloadLengthExtraBytes
+    print 'JC INFO: endOfLifeTime :            ', endOfLifeTime
+    print 'JC INFO: TTL :                      ', TTL
+    print 'JC INFO: POW :                      ', POW
+    print 'JC INFO: POW target :               ', powTarget
+    
+    return POW <= powTarget
 
 def doCleanShutdown():
     global shutdown
