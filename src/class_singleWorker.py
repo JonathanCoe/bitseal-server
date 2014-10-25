@@ -860,7 +860,7 @@ class singleWorker(threading.Thread):
                 if int(time.time()) < 1416175200: # Sun, 16 Nov 2014 22:00:00 GMT
                     dataToSign = payload
                 else:
-                    dataToSign = pack('>Q', embeddedTime) + '\x00\x00\x00\x02' + encodeVarint(1) + encodeVarint(toStreamNumber) + payload 
+                    dataToSign = pack('>Q', embeddedTime) + '\x00\x00\x00\x02' + encodeVarint(1) + encodeVarint(toStreamNumber) + payload
                 signature = highlevelcrypto.sign(dataToSign, privSigningKeyHex)
                 payload += encodeVarint(len(signature))
                 payload += signature

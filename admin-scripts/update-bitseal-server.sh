@@ -21,17 +21,22 @@ if [ $? -eq 0 ]; then
   ps aux | grep -i bitmessagemain.py | awk {'print $2'} | xargs kill -9
 fi
 
+# Delete all compiled .pyc files in src directory
 cd ~/apps/bitseal-server/src
 rm *.pyc
+
+# If a nohup.out logging file already exists, delete it
 if [ -f nohup.out ];
 then
    rm nohup.out
 fi
 
+# Delete all compiled .pyc files in pyelliptic directory
 cd pyelliptic
 rm *.pyc
 cd ..
 
+# Delete all compiled .pyc files in socks directory
 cd socks
 rm *.pyc
 cd ../..

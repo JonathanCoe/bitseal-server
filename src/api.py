@@ -164,27 +164,24 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
 
         elif method == 'disseminateMsg': 
             self.checkParameters(params, 1)
-            payload, = params 
-            payloadBytes = payload.decode('hex') 
-            if (shared.checkAndShareObjectWithPeers(payloadBytes) > 0):
+            payload, = params
+            if (shared.checkAndShareObjectWithPeers(payload) > 0):
                 return 'Message disseminated successfully'
             else:
                 return 'Message dissemination failed'
 
         elif method == 'disseminatePubkey': 
             self.checkParameters(params, 1)
-            payload, = params 
-            payloadBytes = payload.decode('hex') 
-            if (shared.checkAndShareObjectWithPeers(payloadBytes) > 0):
+            payload, = params
+            if (shared.checkAndShareObjectWithPeers(payload) > 0):
                 return 'Pubkey disseminated successfully'
             else:
                 return 'Pubkey dissemination failed'
 
         elif method == 'disseminateGetpubkey': 
             self.checkParameters(params, 1)
-            payload, = params 
-            payloadBytes = payload.decode('hex') 
-            if (shared.checkAndShareObjectWithPeers(payloadBytes) > 0):
+            payload, = params
+            if (shared.checkAndShareObjectWithPeers(payload) > 0):
                 return 'Getpubkey disseminated successfully'
             else:
                 return 'Getpubkey dissemination failed'
