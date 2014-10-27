@@ -347,13 +347,6 @@ def isProofOfWorkSufficient(data,
                   :8] + hashlib.sha512(data[8:]).digest()).digest()).digest()[0:8])
     powTarget = 2 ** 64 / (nonceTrialsPerByte*(len(data) + payloadLengthExtraBytes + ((TTL*(len(data)+payloadLengthExtraBytes))/(2 ** 16))))
     
-    print 'JC INFO: nonceTrialsPerByte :       ', nonceTrialsPerByte
-    print 'JC INFO: payloadLengthExtraBytes :  ', payloadLengthExtraBytes
-    print 'JC INFO: endOfLifeTime :            ', endOfLifeTime
-    print 'JC INFO: TTL :                      ', TTL
-    print 'JC INFO: POW :                      ', POW
-    print 'JC INFO: POW target :               ', powTarget
-    
     return POW <= powTarget
 
 def doCleanShutdown():
@@ -622,8 +615,6 @@ def checkAndShareObjectWithPeers(data):
     Returns the length of time that we should reserve to process this message
     if we are receiving it off of the wire.
     """
-    
-    print 'JC INFO: object payload : ', data.encode('hex')
     
     if len(data) > 2 ** 18:
         logger.info('The payload length of this object is too large (%s bytes). Ignoring it.' % len(data))
