@@ -5,7 +5,7 @@ Bitseal is a Bitmessage client for Android, currently in Beta.
 
 Bitseal Server is a slightly modified version of [PyBitmessage](https://github.com/bitmessage/pybitmessage).
 
-<img src=https://i.imgur.com/DmkWNqe.png" align="left" height="399" width="800" hspace="5" vspace="20">
+<img src=https://i.imgur.com/DmkWNqe.png" align="left" height="399" width="800" vspace="20">
 
 ---------------
 **See also Bitseal's main respository: [https://github.com/JonathanCoe/bitseal](https://github.com/JonathanCoe/bitseal)**
