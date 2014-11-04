@@ -1,15 +1,8 @@
 softwareVersion = '0.4.4'
-
 verbose = 1
-
 maximumAgeOfAnObjectThatIAmWillingToAccept = 216000  # This is obsolete with the change to protocol v3 but the singleCleaner thread still hasn't been updated so we need this a little longer.
-
-''' Equals 12 weeks. This is 4 weeks in stock PyBitmessage, but we want to hold on to pubkeys for longer so that
-lite clients can retrieve them quickly.'''
-lengthOfTimeToHoldOnToAllPubkeys = 7257600
-
+lengthOfTimeToHoldOnToAllPubkeys = 2419200  # Equals 4 weeks. You could make this longer if you want but making it shorter would not be advisable because there is a very small possibility that it could keep you from obtaining a needed pubkey for a period of time.
 maximumAgeOfNodesThatIAdvertiseToOthers = 10800  # Equals three hours
-
 useVeryEasyProofOfWorkForTesting = False  # If you set this to True while on the normal network, you won't be able to send or sometimes receive messages.
 
 
