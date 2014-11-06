@@ -192,62 +192,46 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
 
         #   Commands for requesting msgs and pubkeys
 
-        elif method == 'requestPubkey': 
+        elif method == 'requestPubkey':
+            
+            ''' Check the supplied parameters ''' 
             if len(params) != 2: 
                 raise APIError(0, 'I need 2 parameters!') 
-            identifierHex, addressVersion = params # The identifier is either the ripe hash or the 'tag' of the pubkey we are requesting
+            identifierHex, addressVersion = params
+            
+            ''' Check that the address version and requested tag are valid '''
             if addressVersion < 1:
                 raise APIError(2, 'The address version cannot be less than 1')
             elif addressVersion > 4:
                 raise APIError(3, 'Address versions above 4 are currently not supported')
             elif addressVersion < 4: # For pubkeys of address versions 1-3
                 if len(identifierHex) != 40: 
-                    raise APIError(4, 'The length of hash should be 20 bytes (encoded in hex and thus 40 characters).')
-                else:
-                    requestedRipeHash = self._decode(identifierHex, "hex")
-                    queryReturn = sqlQuery('''SELECT payload FROM inventory WHERE objecttype=1 and tag=? ''', requestedRipeHash) 
-                    if queryReturn != []:
-                        payload = queryReturn[0]
-                        if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
-                            return self.outputQueryReturn("pubkeyPayload", queryReturn)
-                        else:
-                            raise APIError(6, 'The requested object was found, but its payload is above the maximum size limit. The size of the object payload is ' + str(len(payload)))                   
-                    else:
-                        # We had no success looking in the sql inventory. Let's look through the memory inventory.
-                        with shared.inventoryLock:
-                            for hash, storedValue in shared.inventory.items():
-                                objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
-                                if objectType == self.OBJECT_TYPE_PUBKEY and tag == requestedRipeHash:
-                                    if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
-                                        return self.outputPayload("pubkeyPayload", payload)
-                                    else:
-                                        raise APIError(6, 'The requested object was found, but its payload is above the maximum size limit. The size of the object payload is ' + str(len(payload)))
-                                else:
-                                    return 'No pubkeys found'
+                    raise APIError(4, 'The length of identifier (the ripe hash of the pubkey) should be 20 bytes (encoded in hex and thus 40 characters).')
             else:  # For pubkeys of address version 4  
                 if len(identifierHex) != 64: 
-                    raise APIError(5, 'The length of tag should be 32 bytes (encoded in hex and thus 64 characters).') 
+                    raise APIError(5, 'The length of identifier (the tag of the pubkey) should be 32 bytes (encoded in hex and thus 64 characters).') 
+                
+            ''' Now attempt to retrieve the pubkey using the given identifier '''
+            requestedTag = self._decode(identifierHex, "hex")
+            queryReturn = sqlQuery('''SELECT payload FROM inventory WHERE objecttype=1 and tag=? ''', requestedTag) 
+            if queryReturn != []:
+                payload = queryReturn[0]
+                if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
+                    return self.outputQueryReturn("pubkeyPayload", queryReturn)
                 else:
-                    requestedTag = self._decode(identifierHex, "hex")
-                    queryReturn = sqlQuery('''SELECT payload FROM inventory WHERE objecttype=1 and tag=? ''', requestedTag) 
-                    if queryReturn != []:
-                        payload = queryReturn[0]
-                        if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
-                            return self.outputQueryReturn("pubkeyPayload", queryReturn)
+                    raise APIError(6, 'The requested object was found, but its payload is above the maximum size limit. The size of the object payload is ' + str(len(payload)))                   
+            else:
+                # We had no success looking in the sql inventory. Let's look through the memory inventory.
+                with shared.inventoryLock:
+                    for hash, storedValue in shared.inventory.items():
+                        objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
+                        if objectType == self.OBJECT_TYPE_PUBKEY and tag == requestedTag:
+                            if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
+                                return self.outputPayload("pubkeyPayload", payload)
+                            else:
+                                raise APIError(6, 'The requested object was found, but its payload is above the maximum size limit. The size of the object payload is ' + str(len(payload)))
                         else:
-                            raise APIError(6, 'The requested object was found, but its payload is above the maximum size limit. The size of the object payload is ' + str(len(payload)))                   
-                    else:
-                        # We had no success looking in the sql inventory. Let's look through the memory inventory.
-                        with shared.inventoryLock:
-                            for hash, storedValue in shared.inventory.items():
-                                objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
-                                if objectType == self.OBJECT_TYPE_PUBKEY and tag == requestedTag:
-                                    if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
-                                        return self.outputPayload("pubkeyPayload", payload)
-                                    else:
-                                        raise APIError(6, 'The requested object was found, but its payload is above the maximum size limit. The size of the object payload is ' + str(len(payload)))
-                                else:
-                                    return 'No pubkeys found'
+                            return 'No pubkeys found'
                                 
         elif method == 'checkForNewMsgs':
             self.checkParameters(params, 3)
