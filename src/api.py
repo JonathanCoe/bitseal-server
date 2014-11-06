@@ -204,16 +204,26 @@ class MySimpleXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
                 if len(identifierHex) != 40: 
                     raise APIError(4, 'The length of hash should be 20 bytes (encoded in hex and thus 40 characters).')
                 else:
-                    requestedHash = self._decode(identifierHex, "hex")
-                    queryReturn = sqlQuery('''SELECT transmitdata FROM pubkeys WHERE hash = ? ; ''', requestedHash) 
-                    if queryReturn == []:
-                        return 'No pubkeys found'
-                    else:
+                    requestedRipeHash = self._decode(identifierHex, "hex")
+                    queryReturn = sqlQuery('''SELECT payload FROM inventory WHERE objecttype=1 and tag=? ''', requestedRipeHash) 
+                    if queryReturn != []:
                         payload = queryReturn[0]
                         if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
                             return self.outputQueryReturn("pubkeyPayload", queryReturn)
                         else:
                             raise APIError(6, 'The requested object was found, but its payload is above the maximum size limit. The size of the object payload is ' + str(len(payload)))                   
+                    else:
+                        # We had no success looking in the sql inventory. Let's look through the memory inventory.
+                        with shared.inventoryLock:
+                            for hash, storedValue in shared.inventory.items():
+                                objectType, streamNumber, payload, expiresTime, tag, receivedTime = storedValue
+                                if objectType == self.OBJECT_TYPE_PUBKEY and tag == requestedRipeHash:
+                                    if len(payload) <= self.MAX_PAYLOAD_SIZE_TO_RETURN:
+                                        return self.outputPayload("pubkeyPayload", payload)
+                                    else:
+                                        raise APIError(6, 'The requested object was found, but its payload is above the maximum size limit. The size of the object payload is ' + str(len(payload)))
+                                else:
+                                    return 'No pubkeys found'
             else:  # For pubkeys of address version 4  
                 if len(identifierHex) != 64: 
                     raise APIError(5, 'The length of tag should be 32 bytes (encoded in hex and thus 64 characters).') 

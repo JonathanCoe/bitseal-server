@@ -783,7 +783,22 @@ def _checkAndSharePubkeyWithPeers(data):
         tag = data[readPosition:readPosition + 32]
         logger.debug('tag in received pubkey is: %s' % tag.encode('hex'))
     else:
-        tag = ''
+        ''' 
+        In stock PyBitmessage, the tag for version 2 and 3 pubkeys is left blank. In bitseal-server
+        we will set it as the ripe hash of the address, so that the pubkey can be requested by clients. 
+        '''
+        readPosition += 4 #Skip over the behaviour bitfield
+        publicSigningKey = data[readPosition:readPosition + 64]
+        readPosition += 64
+        publicEncryptionKey = data[readPosition:readPosition + 64]
+        
+         # Calculate the ripe hash
+        sha = hashlib.new('sha512')
+        sha.update('\x04' + publicSigningKey + '\x04' + publicEncryptionKey)
+        ripeHasher = hashlib.new('ripemd160')
+        ripeHasher.update(sha.digest())
+        ripe = ripeHasher.digest()
+        tag = ripe
 
     shared.numberOfInventoryLookupsPerformed += 1
     inventoryHash = calculateInventoryHash(data)
