@@ -62,7 +62,7 @@ def readDefaultKnownNodes(appdata):
 
 if __name__ == "__main__":
 
-    APPNAME = "PyBitmessage"
+    APPNAME = "bitseal-server"
     from os import path, environ
     if sys.platform == 'darwin':
         from AppKit import NSSearchPathForDirectoriesInDomains  # @UnresolvedImport
