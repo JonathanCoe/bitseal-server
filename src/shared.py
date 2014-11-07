@@ -1,4 +1,4 @@
-softwareVersion = '0.4.4'
+softwareVersion = '0.4.1'
 verbose = 1
 maximumAgeOfAnObjectThatIAmWillingToAccept = 216000  # This is obsolete with the change to protocol v3 but the singleCleaner thread still hasn't been updated so we need this a little longer.
 lengthOfTimeToHoldOnToAllPubkeys = 2419200  # Equals 4 weeks. You could make this longer if you want but making it shorter would not be advisable because there is a very small possibility that it could keep you from obtaining a needed pubkey for a period of time.
@@ -156,7 +156,7 @@ def assembleVersionMessage(remoteHost, remotePort, myStreamNumber):
 
     random.seed()
     payload += eightBytesOfRandomDataUsedToDetectConnectionsToSelf
-    userAgent = '/PyBitmessage:' + shared.softwareVersion + '/'
+    userAgent = '/bitseal-server:' + shared.softwareVersion + '/'
     payload += encodeVarint(len(userAgent))
     payload += userAgent
     payload += encodeVarint(
@@ -175,7 +175,7 @@ def assembleErrorMessage(fatal=0, banTime=0, inventoryVector='', errorText=''):
     return CreatePacket('error', payload)
 
 def lookupAppdataFolder():
-    APPNAME = "PyBitmessage"
+    APPNAME = "bitseal-server"
     if "BITMESSAGE_HOME" in environ:
         dataFolder = environ["BITMESSAGE_HOME"]
         if dataFolder[-1] not in [os.path.sep, os.path.altsep]:
