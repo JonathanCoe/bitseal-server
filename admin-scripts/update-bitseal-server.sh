@@ -1,18 +1,18 @@
 #!/bin/bash
 
 ps aux | grep -i bitmessagemain.py | awk {'print $2'} | xargs kill -2
-sleep 60 #Give PyBitmessage a reasonable amount of time to shut down gracefully
+sleep 10 #Give PyBitmessage a reasonable amount of time to shut down gracefully
 
-# If PyBitmessage  is still running, give it another 60 seconds
+# If PyBitmessage  is still running, give it another 30 seconds
 ps cax | grep python > /dev/null
 if [ $? -eq 0 ]; then
-  sleep 60
+  sleep 30
 fi
 
-# If PyBitmessage  is still running, give it another 60 seconds
+# If PyBitmessage  is still running, give it another 30 seconds
 ps cax | grep python > /dev/null
 if [ $? -eq 0 ]; then
-  sleep 60
+  sleep 30
 fi
 
 # If PyBitmessage has still not closed properly, force kill it
