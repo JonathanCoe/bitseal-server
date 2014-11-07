@@ -156,7 +156,7 @@ def assembleVersionMessage(remoteHost, remotePort, myStreamNumber):
 
     random.seed()
     payload += eightBytesOfRandomDataUsedToDetectConnectionsToSelf
-    userAgent = '/bitseal-server:' + shared.softwareVersion + '/'
+    userAgent = '/PyBitmessage:' + shared.softwareVersion + '/'
     payload += encodeVarint(len(userAgent))
     payload += userAgent
     payload += encodeVarint(
@@ -175,7 +175,7 @@ def assembleErrorMessage(fatal=0, banTime=0, inventoryVector='', errorText=''):
     return CreatePacket('error', payload)
 
 def lookupAppdataFolder():
-    APPNAME = "bitseal-server"
+    APPNAME = "PyBitmessage"
     if "BITMESSAGE_HOME" in environ:
         dataFolder = environ["BITMESSAGE_HOME"]
         if dataFolder[-1] not in [os.path.sep, os.path.altsep]:
