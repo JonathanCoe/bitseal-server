@@ -21,7 +21,7 @@ Instructions for setting up bitseal-server
 
 4) After a few seconds, stop PyBitmessage. PyBitmessage will have created a keys.dat file, which you can now use to specify your API settings
 
-5) Open the keys.dat file in a text editor. You can find its location using this reference: https://bitmessage.org/wiki/Keys.dat
+5) Open the keys.dat file in a text editor. On Linux systems it will be located at "~/.config/bitseal-server". On Windows systems it will be located at "%APPDATA%\bitseal-server". On OSX systems it will be located at "~/Library/Application Support/bitseal-server".  
 
 6) Add the following lines to the "bitmessagesettings" section of the keys.dat file, replacing the port number, username, and password values as appropriate:  
 
