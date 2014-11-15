@@ -1,7 +1,7 @@
 Bitseal-Server
 =======
 
-Bitseal is a Bitmessage client for Android, currently in Beta. 
+Bitseal is a [Bitmessage](https://bitmessage.org) client for Android, currently in Beta. 
 
 Bitseal Server is a slightly modified version of [PyBitmessage](https://github.com/bitmessage/pybitmessage).
 
