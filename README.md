@@ -48,7 +48,7 @@ apipassword = YOUR_API_PASSWORD
 
 License
 ---------------
-Copyright 2014 Jonathan Coe
+Copyright 2014, 2015 Jonathan Coe
 
 Licensed under the [Gnu General Public License Version 3](https://www.gnu.org/licenses/gpl-3.0.html)
 
