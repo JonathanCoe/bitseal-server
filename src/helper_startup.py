@@ -58,7 +58,7 @@ def loadConfig():
         # no config file (or it cannot be accessed). Create config file.
         shared.config.add_section('bitmessagesettings')
         shared.config.set('bitmessagesettings', 'settingsversion', '10')
-        shared.config.set('bitmessagesettings', 'port', '8444')
+        shared.config.set('bitmessagesettings', 'port', '8446')
         shared.config.set(
             'bitmessagesettings', 'timeformat', '%%a, %%d %%b %%Y  %%I:%%M %%p')
         shared.config.set('bitmessagesettings', 'blackwhitelist', 'black')
