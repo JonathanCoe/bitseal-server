@@ -1,4 +1,4 @@
-softwareVersion = '0.4.1'
+softwareVersion = '0.4.2'
 verbose = 1
 maximumAgeOfAnObjectThatIAmWillingToAccept = 216000  # This is obsolete with the change to protocol v3 but the singleCleaner thread still hasn't been updated so we need this a little longer.
 lengthOfTimeToHoldOnToAllPubkeys = 2419200  # Equals 4 weeks. You could make this longer if you want but making it shorter would not be advisable because there is a very small possibility that it could keep you from obtaining a needed pubkey for a period of time.
