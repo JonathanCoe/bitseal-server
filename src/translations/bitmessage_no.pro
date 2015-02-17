@@ -1,5 +1,5 @@
 SOURCES	= 	../addresses.py\
-			../bitmessagemain.py\
+			../bitseal-server.py\
 			../class_addressGenerator.py\
 			../class_objectProcessor.py\
 			../class_outgoingSynSender.py\

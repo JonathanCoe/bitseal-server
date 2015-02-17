@@ -889,27 +889,27 @@ p, li { white-space: pre-wrap; }
         <translation>Chan beitreten / erstellen</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3479"/>
+        <location filename="../bitseal-server.py" line="3479"/>
         <source>Encryption key was requested earlier.</source>
         <translation type="obsolete">Verschlüsselungscode wurde bereits angefragt.</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3533"/>
+        <location filename="../bitseal-server.py" line="3533"/>
         <source>Sending a request for the recipient&apos;s encryption key.</source>
         <translation type="obsolete">Sende eine Anfrage für den Verschlüsselungscode des Empfängers.</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3816"/>
+        <location filename="../bitseal-server.py" line="3816"/>
         <source>Doing work necessary to request encryption key.</source>
         <translation type="obsolete">Verrichte die benötigte Arbeit um den Verschlüsselungscode anzufragen.</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3844"/>
+        <location filename="../bitseal-server.py" line="3844"/>
         <source>Broacasting the public key request. This program will auto-retry if they are offline.</source>
         <translation type="obsolete">Anfrage für den Verschlüsselungscode versendet (wird automatisch periodisch neu verschickt).</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3846"/>
+        <location filename="../bitseal-server.py" line="3846"/>
         <source>Sending public key request. Waiting for reply. Requested at %1</source>
         <translation type="obsolete">Anfrag für den Verschlüsselungscode gesendet. Warte auf Antwort. Angefragt am %1</translation>
     </message>

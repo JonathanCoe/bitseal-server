@@ -17,7 +17,7 @@ Instructions for setting up bitseal-server
 
 2) Extract the source code files to the desired location on your server
 
-3) Run bitmessagemain.py
+3) Run bitseal-server.py
 
 4) After a few seconds, stop PyBitmessage. PyBitmessage will have created a keys.dat file, which you can now use to specify your API settings
 
@@ -38,7 +38,7 @@ apipassword = YOUR_API_PASSWORD
 
 8) Ensure that your server's firewall is set up allowing incoming + outgoing TCP connections on port 8446 (bitseal-server default) and the API port you specified in the keys.dat file
 
-9) Run bitmessagemain.py
+9) Run bitseal-server.py
 
 10) Open Bitseal and add your server's URL, API username, and API password via the 'Server Settings' page
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ps aux | grep -i bitmessagemain.py | awk {'print $2'} | xargs kill -2
+ps aux | grep -i bitseal-server.py | awk {'print $2'} | xargs kill -2
 sleep 10 #Give PyBitmessage a reasonable amount of time to shut down gracefully
 
 # If PyBitmessage  is still running, give it another 30 seconds
@@ -18,7 +18,7 @@ fi
 # If PyBitmessage has still not closed properly, force kill it
 ps cax | grep python > /dev/null
 if [ $? -eq 0 ]; then
-  ps aux | grep -i bitmessagemain.py | awk {'print $2'} | xargs kill -9
+  ps aux | grep -i bitseal-server.py | awk {'print $2'} | xargs kill -9
 fi
 
 # Delete all compiled .pyc files in src directory
@@ -45,4 +45,4 @@ git pull
 sleep 10
 
 cd src
-nohup python bitmessagemain.py >> ~/apps/bitseal-server/src/nohup.out 2>&1 &
+nohup python bitseal-server.py >> ~/apps/bitseal-server/src/nohup.out 2>&1 &

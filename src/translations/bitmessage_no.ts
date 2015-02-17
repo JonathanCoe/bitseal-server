@@ -737,7 +737,7 @@ Det er viktig at du tar en sikkerhetskopi av denne filen. Vil du &#xE5;pne denne
         <translation>Mistet tilkobling</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="178"/>
+        <location filename="../bitseal-server.py" line="178"/>
         <source>SOCKS5 Authentication problem: %1</source>
         <translation type="obsolete">Autentiseringsproblem med SOCKS5: %1</translation>
     </message>
@@ -747,59 +747,59 @@ Det er viktig at du tar en sikkerhetskopi av denne filen. Vil du &#xE5;pne denne
         <translation>Svar</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3907"/>
+        <location filename="../bitseal-server.py" line="3907"/>
         <source>Generating one new address</source>
         <translation type="obsolete">Genererer en ny adresse</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3978"/>
+        <location filename="../bitseal-server.py" line="3978"/>
         <source>Done generating address. Doing work necessary to broadcast it...</source>
         <translation type="obsolete">Ferdig med &#xE5; generere adresse. Utf&#248;rer n&#248;dvendig arbeidsoppgave for &#xE5; kringkaste den ...</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="4101"/>
+        <location filename="../bitseal-server.py" line="4101"/>
         <source>Done generating address</source>
         <translation>Ferdig med &#xE5; generere adresse</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3779"/>
+        <location filename="../bitseal-server.py" line="3779"/>
         <source>Message sent. Waiting on acknowledgement. Sent on %1</source>
         <translation type="obsolete">Beskjed sendt, venter p&#xE5; bekreftelse. Sendt %1</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3698"/>
+        <location filename="../bitseal-server.py" line="3698"/>
         <source>Error! Could not find sender address (your address) in the keys.dat file.</source>
         <translation type="obsolete">Feil! Kunne ikke finne avsenderadresse (din adresse) i n&#248;kkelfilen som er keys.dat.</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3406"/>
+        <location filename="../bitseal-server.py" line="3406"/>
         <source>Doing work necessary to send broadcast...</source>
         <translation type="obsolete">Utf&#248;rer n&#248;dvendig arbeidsoppgave for &#xE5; kringkaste ...</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3422"/>
+        <location filename="../bitseal-server.py" line="3422"/>
         <source>Broadcast sent on %1</source>
         <translation type="obsolete">Kringkastet p&#xE5; %1</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3542"/>
+        <location filename="../bitseal-server.py" line="3542"/>
         <source>Looking up the receiver&apos;s public key</source>
         <translation type="obsolete">Gj&#248;r oppslag for &#xE5; finne mottakers offentlige n&#248;kkel</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3615"/>
+        <location filename="../bitseal-server.py" line="3615"/>
         <source>Doing work necessary to send message. (There is no required difficulty for version 2 addresses like this.)</source>
         <translation type="obsolete">Utf&#248;rer n&#248;dvendig arbeidsoppgave for &#xE5; sende beskjeden. (Det er ikke noe krav til vanskelighet for adresser av type to som benyttet her.)</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3618"/>
+        <location filename="../bitseal-server.py" line="3618"/>
         <source>Doing work necessary to send message. 
 Receiver&apos;s required difficulty: %1 and %2</source>
         <translation type="obsolete">Utf&#248;rer n&#248;dvendig arbeidsoppgave for &#xE5; sende beskjeden. 
 Mottakernes krav til vanskelighet: %1 og %2</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3632"/>
+        <location filename="../bitseal-server.py" line="3632"/>
         <source>Problem: The work demanded by the recipient (%1 and %2) is more difficult than you are willing to do.</source>
         <translation type="obsolete">Problem: Arbeidsoppgaven som kreves utf&#248;rt av mottaker (%1 og %2) er mer krevende enn det du har satt som akseptabelt.</translation>
     </message>
@@ -814,7 +814,7 @@ Mottakernes krav til vanskelighet: %1 og %2</translation>
         <translation>Arbeidsoppgave er satt i k&#248;. %1</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3605"/>
+        <location filename="../bitseal-server.py" line="3605"/>
         <source>Doing work necessary to send message. 
 There is no required difficulty for version 2 addresses like this.</source>
         <translation type="obsolete">Utf&#248;rer n&#248;dvendig arbeidsoppgave for &#xE5; sende beskjeden. 

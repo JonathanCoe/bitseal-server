@@ -746,7 +746,7 @@ It is important that you back up this file. Would you like to open the file now?
         <translation>تم فقد الاتصال</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="178"/>
+        <location filename="../bitseal-server.py" line="178"/>
         <source>SOCKS5 Authentication problem: %1</source>
         <translation type="obsolete">Problème d&apos;authentification SOCKS5 : %1</translation>
     </message>
@@ -757,59 +757,59 @@ It is important that you back up this file. Would you like to open the file now?
         <translation>رد</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3907"/>
+        <location filename="../bitseal-server.py" line="3907"/>
         <source>Generating one new address</source>
         <translation type="obsolete">Génération d&apos;une nouvelle adresse</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3978"/>
+        <location filename="../bitseal-server.py" line="3978"/>
         <source>Done generating address. Doing work necessary to broadcast it...</source>
         <translation type="obsolete">Génération de l&apos;adresse terminée. Travail pour la diffuser en cours...</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="4101"/>
+        <location filename="../bitseal-server.py" line="4101"/>
         <source>Done generating address</source>
         <translation type="obsolete">Génération de l&apos;adresse terminée</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3779"/>
+        <location filename="../bitseal-server.py" line="3779"/>
         <source>Message sent. Waiting on acknowledgement. Sent on %1</source>
         <translation type="obsolete">Message envoyé. En attente de l&apos;accusé de réception. Envoyé le %1</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3698"/>
+        <location filename="../bitseal-server.py" line="3698"/>
         <source>Error! Could not find sender address (your address) in the keys.dat file.</source>
         <translation type="obsolete">Erreur ! L&apos;adresse de l&apos;expéditeur (vous) n&apos;a pas pu être trouvée dans le fichier keys.dat.</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3406"/>
+        <location filename="../bitseal-server.py" line="3406"/>
         <source>Doing work necessary to send broadcast...</source>
         <translation type="obsolete">Travail pour envoyer la diffusion en cours...</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3422"/>
+        <location filename="../bitseal-server.py" line="3422"/>
         <source>Broadcast sent on %1</source>
         <translation type="obsolete">Message de diffusion envoyé le %1</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3542"/>
+        <location filename="../bitseal-server.py" line="3542"/>
         <source>Looking up the receiver&apos;s public key</source>
         <translation type="obsolete">Recherche de la clé publique du destinataire</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3615"/>
+        <location filename="../bitseal-server.py" line="3615"/>
         <source>Doing work necessary to send message. (There is no required difficulty for version 2 addresses like this.)</source>
         <translation type="obsolete">Travail nécessaire pour envoyer le message en cours. (Il n&apos;y a pas de difficulté requise pour ces adresses de version 2.)</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3618"/>
+        <location filename="../bitseal-server.py" line="3618"/>
         <source>Doing work necessary to send message.
 Receiver&apos;s required difficulty: %1 and %2</source>
         <translation type="obsolete">Travail nécessaire pour envoyer le message.
 Difficulté requise par le destinataire : %1 et %2</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3632"/>
+        <location filename="../bitseal-server.py" line="3632"/>
         <source>Problem: The work demanded by the recipient (%1 and %2) is more difficult than you are willing to do.</source>
         <translation type="obsolete">Problème : Le travail demandé par le destinataire (%1 et %2) est plus difficile que ce que vous souhaitez faire.</translation>
     </message>
@@ -824,7 +824,7 @@ Difficulté requise par le destinataire : %1 et %2</translation>
         <translation>تم إدراج العمل ضمن قائمة الإنتظار. %1</translation>
     </message>
     <message>
-        <location filename="../bitmessagemain.py" line="3605"/>
+        <location filename="../bitseal-server.py" line="3605"/>
         <source>Doing work necessary to send message.
 There is no required difficulty for version 2 addresses like this.</source>
         <translation type="obsolete">Travail nécessaire pour envoyer le message en cours. 

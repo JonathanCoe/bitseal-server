@@ -7,4 +7,4 @@ then
 fi
 
 sleep 5
-nohup python bitmessagemain.py >> ~/apps/bitseal-server/src/nohup.out 2>&1 &
+nohup python bitseal-server.py >> ~/apps/bitseal-server/src/nohup.out 2>&1 &

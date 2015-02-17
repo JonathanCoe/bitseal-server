@@ -2,7 +2,7 @@ from setuptools import setup
 
 name = "Bitmessage"
 version = "0.4.4"
-mainscript = ["bitmessagemain.py"]
+mainscript = ["bitseal-server.py"]
 
 setup(
     name = name,

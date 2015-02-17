@@ -60,7 +60,7 @@ def _doFastPoW(target, initialHash):
         if shared.shutdown >= 1:
             pool.terminate()
             while True:
-                time.sleep(10) # Don't let this thread return here; it will return nothing and cause an exception in bitmessagemain.py
+                time.sleep(10) # Don't let this thread return here; it will return nothing and cause an exception in bitseal-server.py
             return
         for i in range(pool_size):
             if result[i].ready():
