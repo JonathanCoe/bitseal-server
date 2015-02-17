@@ -23,7 +23,7 @@ Instructions for setting up bitseal-server
 
 5) Open the keys.dat file in a text editor. On Linux systems it will be located at "~/.config/bitseal-server". On Windows systems it will be located at "%APPDATA%\bitseal-server". On OSX systems it will be located at "~/Library/Application Support/bitseal-server".  
 
-6) Add the following lines to the "bitmessagesettings" section of the keys.dat file, replacing the port number, username, and password values as appropriate:  
+6) Add the following lines to the "bitmessagesettings" section of the keys.dat file, replacing the port number, username, and password values as appropriate (port 8447 is suggested as a default choice):  
 
 ```
 daemon = true
@@ -36,7 +36,7 @@ apipassword = YOUR_API_PASSWORD
                     
 7) Save and close the keys.dat file
 
-8) Ensure that your server's firewall is set up allowing incoming + outgoing TCP connections on port 8444 (PyBitmessage default) and the API port you specified in the keys.dat file
+8) Ensure that your server's firewall is set up allowing incoming + outgoing TCP connections on port 8446 (bitseal-server default) and the API port you specified in the keys.dat file
 
 9) Run bitmessagemain.py
 
