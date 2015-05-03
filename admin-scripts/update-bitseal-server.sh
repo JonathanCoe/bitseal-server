@@ -1,21 +1,24 @@
 #!/bin/bash
 
+# Do a graceful shutdown of bitseal-server
 ps aux | grep -i bitseal-server.py | awk {'print $2'} | xargs kill -2
-sleep 10 #Give PyBitmessage a reasonable amount of time to shut down gracefully
 
-# If PyBitmessage  is still running, give it another 30 seconds
+#Give bitseal-server a reasonable amount of time to shut down gracefully
+sleep 2
+
+# If bitseal-server  is still running, give it some more time to shut down
 ps cax | grep python > /dev/null
 if [ $? -eq 0 ]; then
-  sleep 30
+  sleep 5
 fi
 
-# If PyBitmessage  is still running, give it another 30 seconds
+# If bitseal-server  is still running, give it some more time to shut down
 ps cax | grep python > /dev/null
 if [ $? -eq 0 ]; then
-  sleep 30
+  sleep 5
 fi
 
-# If PyBitmessage has still not closed properly, force kill it
+# If bitseal-server has still not closed properly, force kill it
 ps cax | grep python > /dev/null
 if [ $? -eq 0 ]; then
   ps aux | grep -i bitseal-server.py | awk {'print $2'} | xargs kill -9
@@ -41,8 +44,10 @@ cd socks
 rm *.pyc
 cd ../..
 
+# Update the source code
 git pull
 sleep 10
 
+# Restart bitseal-server
 cd src
 nohup python bitseal-server.py >> ~/apps/bitseal-server/src/nohup.out 2>&1 &
